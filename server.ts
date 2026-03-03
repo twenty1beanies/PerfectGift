@@ -83,7 +83,7 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for development
+  // Vite middleware - MODIFICATO PER VERCEL
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -91,16 +91,20 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
+    // In produzione su Vercel, serviamo i file dalla cartella dist
     app.use(express.static("dist"));
-    // Catch-all route for SPA
-    app.get("*", (req, res) => {
-      res.sendFile("index.html", { root: "dist" });
-    });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+  // Fondamentale: esportiamo l'app per Vercel invece di fare solo app.listen
+  return app;
+}
+
+// Avvio per il locale, esportazione per il cloud
+export const app = startServer();
+if (process.env.NODE_ENV !== "production") {
+  startServer().then(app => {
+    app.listen(3000, () => console.log("Server running on port 3000"));
   });
 }
 
-startServer();
+export default app;
