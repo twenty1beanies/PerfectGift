@@ -15,7 +15,7 @@ app.post("/api/generate-gifts", async (req, res) => {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
     // Prompt ottimizzato per evitare testo extra fuori dal JSON
     const prompt = `Sei un esperto di regali. Analizza: "${description}" con Budget: ${budget}€. 
