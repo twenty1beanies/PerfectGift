@@ -1,5 +1,5 @@
 import express from "express";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 app.use(express.json());
@@ -12,7 +12,7 @@ app.post("/api/generate-gifts", async (req, res) => {
 
     if (!apiKey) return res.status(500).json({ error: "API Key mancante su Vercel" });
 
-    const genAI = new GoogleGenAI(apiKey);
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `Analizza: "${description}" Budget: ${budget}€. Rispondi in ${lang}. 
